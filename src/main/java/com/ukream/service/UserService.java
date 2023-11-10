@@ -35,7 +35,7 @@ public class UserService {
    * @return 이메일이 이미 등록되어 있으면 true를 반환하고, 그렇지 않으면 false를 반환합니다.
    */
   public boolean isDuplicatedEmail(String email) {
-    return userMapper.emailCheck(email) == 1 ? true : false;
+    return userMapper.checkDuplicatedEmail(email) == 1;
   }
   
 }

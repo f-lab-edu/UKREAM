@@ -5,7 +5,7 @@
     
 
 
-    <select id="emailCheck" resultType="int">
+    <select id="checkDuplicatedEmail" resultType="int">
         SELECT COUNT(email)
         FROM User
         WHERE email = #{email}
