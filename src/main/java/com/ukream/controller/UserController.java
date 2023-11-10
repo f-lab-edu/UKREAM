@@ -1,6 +1,7 @@
 package com.ukream.controller;
 
 import com.ukream.annotation.LoginCheck;
+import com.ukream.dto.LoginFormDTO;
 import com.ukream.dto.UserDTO;
 import com.ukream.service.UserService;
 import com.ukream.util.SessionUtil;
@@ -34,4 +35,27 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
+  /**
+   * 로그인
+   *
+   * @param input 유저 정보
+   * @return 로그인이 성공한 경우 HTTP 200 OK 상태코드와 함께 응답
+   */
+  @PostMapping("/login")
+  public ResponseEntity<Void> login(@Valid @RequestBody LoginFormDTO input, HttpSession session) {
+    UserDTO user = userService.login(input);
+    SessionUtil.setLoginUserId(session, user.getUserId());
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  /**
+   * 사용자 로그아웃
+   *
+   * @param session 사용자 세션
+   */
+  @GetMapping("/logout")
+  @LoginCheck(type = LoginCheck.UserType.USER)
+  public void logout(HttpSession session) {
+    SessionUtil.logoutUser(session);
+  }
 }

@@ -38,4 +38,15 @@ public class UserService {
     return userMapper.checkDuplicatedEmail(email) == 1;
   }
   
+  public UserDTO login(LoginFormDTO input) {
+    input.setPassword(SHA256Util.generateSha256(input.getPassword()));
+
+    UserDTO user = userMapper.findByEmailAndPassword(input);
+
+    if (user == null) {
+      throw new LoginFailureException("유효하지 않은 이메일 또는 비밀번호입니다.");
+    }
+
+    return user;
+  }
 }

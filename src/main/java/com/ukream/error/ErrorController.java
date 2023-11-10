@@ -37,4 +37,18 @@ public class ErrorController {
             });
     return ResponseEntity.badRequest().body(errors);
   }
+
+  @ExceptionHandler(LoginRequiredException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<String> handleAuthenticationRequiredException(LoginRequiredException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(LoginFailureException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<String> handleAuthenticationFailureException(LoginFailureException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
+
+  
 }
