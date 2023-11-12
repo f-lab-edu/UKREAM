@@ -40,13 +40,13 @@ public class ErrorController {
 
   @ExceptionHandler(LoginRequiredException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ResponseEntity<String> handleAuthenticationRequiredException(LoginRequiredException ex) {
+  public ResponseEntity<String> handleLoginRequiredException(LoginRequiredException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
 
   @ExceptionHandler(LoginFailureException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ResponseEntity<String> handleAuthenticationFailureException(LoginFailureException ex) {
+  public ResponseEntity<String> handleLoginFailureException(LoginFailureException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
 
