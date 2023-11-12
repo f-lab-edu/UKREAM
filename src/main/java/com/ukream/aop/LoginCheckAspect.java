@@ -6,6 +6,7 @@ import com.ukream.util.SessionUtil;
 import javax.servlet.http.HttpSession;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -24,7 +25,7 @@ public class LoginCheckAspect {
    * @param loginCheck LoginCheck 어노테이션 객체
    * @throws Throwable 예외 처리
    */
-  @Around("@annotation(com.ukream.annotation.LoginCheck) && @annotation(loginCheck)")
+  @Before("@annotation(com.ukream.annotation.LoginCheck) && @annotation(loginCheck)")
   public void loginCheck(LoginCheck loginCheck) throws Throwable {
     // 현재 요청의 HttpSession을 획득
     HttpSession session =
