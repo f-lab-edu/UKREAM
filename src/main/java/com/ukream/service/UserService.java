@@ -21,9 +21,7 @@ public class UserService {
    * @throws DuplicatedEmailException 이메일이 이미 존재할 경우 발생합니다.
    */
   public void createUser(UserDTO user) {
-    if (isDuplicatedEmail(user.getEmail())) {
-      throw new DuplicatedEmailException("중복된 이메일 입니다.");
-    }
+    isDuplicatedEmail(user.getEmail());
     user.setPassword(SHA256Util.generateSha256(user.getPassword()));
     userMapper.createUser(user);
   }
