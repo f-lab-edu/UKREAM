@@ -3,6 +3,8 @@ package com.ukream.error;
 import com.ukream.error.exception.DuplicatedEmailException;
 import com.ukream.error.exception.LoginFailureException;
 import com.ukream.error.exception.LoginRequiredException;
+import com.ukream.error.exception.UserNotFoundException;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -47,6 +49,12 @@ public class ErrorController {
   @ExceptionHandler(LoginFailureException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<String> handleLoginFailureException(LoginFailureException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(UserNotFoundException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
 

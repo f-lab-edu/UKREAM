@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper {
 
-  public int checkDuplicatedEmail(String email);
+  public boolean checkDuplicatedEmail(String email);
 
   public void createUser(UserDTO user);
 
