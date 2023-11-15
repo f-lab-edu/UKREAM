@@ -1,12 +1,13 @@
 package com.ukream.error;
 
+import com.ukream.error.exception.BrandNotFoundException;
 import com.ukream.error.exception.DuplicatedEmailException;
 import com.ukream.error.exception.LoginFailureException;
 import com.ukream.error.exception.LoginRequiredException;
 import com.ukream.error.exception.UserNotFoundException;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -40,6 +41,14 @@ public class ErrorController {
     return ResponseEntity.badRequest().body(errors);
   }
 
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ResponseEntity<String> handleDataIntegrityViolationException(
+      DataIntegrityViolationException ex) {
+
+    String errorMessage = "데이터 무결성 위반 예외가 발생했습니다.";
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+  }
+
   @ExceptionHandler(LoginRequiredException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<String> handleLoginRequiredException(LoginRequiredException ex) {
@@ -58,5 +67,9 @@ public class ErrorController {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
 
-  
+  @ExceptionHandler(BrandNotFoundException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<String> handleBrandNotFoundException(BrandNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
 }
