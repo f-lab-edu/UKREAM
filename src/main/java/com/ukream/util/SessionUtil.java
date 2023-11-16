@@ -25,7 +25,7 @@ public class SessionUtil {
    */
   public static Long getLoginUserId(HttpSession session) {
     Long userId = (Long) session.getAttribute(LOGIN_USER_ID);
-    return userId == null ? 0L : userId;
+    return userId;
   }
 
   /**
@@ -46,8 +46,7 @@ public class SessionUtil {
    */
   public static Long getLoginAdminId(HttpSession session) {
     Long adminId = (Long) session.getAttribute(LOGIN_ADMIN_ID);
-    System.out.println(adminId);
-    return adminId == null ? 0L : adminId;
+    return adminId;
   }
 
   /**

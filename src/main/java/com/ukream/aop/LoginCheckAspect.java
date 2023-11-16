@@ -4,7 +4,6 @@ import com.ukream.annotation.LoginCheck;
 import com.ukream.error.exception.LoginRequiredException;
 import com.ukream.util.SessionUtil;
 import javax.servlet.http.HttpSession;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,7 @@ public class LoginCheckAspect {
             .getRequest()
             .getSession();
 
-    Long id = 0L;
+    Long id = null;
     String userType = loginCheck.type().toString();
 
     // LoginCheck 어노테이션에서 지정한 유저 타입에 따라 세션에서 사용자 ID 추출
@@ -50,8 +49,8 @@ public class LoginCheckAspect {
         }
     }
 
-    // ID가 0이면 로그인이 되어 있지 않은 상태이므로 예외 발생
-    if (id == 0L) {
+    // ID가 null이면 로그인이 되어 있지 않은 상태이므로 예외 발생
+    if (id == null) {
       throw new LoginRequiredException("로그인을 해주세요.");
     }
   }
