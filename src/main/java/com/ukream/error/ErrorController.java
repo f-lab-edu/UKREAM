@@ -41,13 +41,6 @@ public class ErrorController {
     return ResponseEntity.badRequest().body(errors);
   }
 
-  @ExceptionHandler(DataIntegrityViolationException.class)
-  public ResponseEntity<String> handleDataIntegrityViolationException(
-      DataIntegrityViolationException ex) {
-
-    String errorMessage = "데이터 무결성 위반 예외가 발생했습니다.";
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
-  }
 
   @ExceptionHandler(LoginRequiredException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
