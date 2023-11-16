@@ -1,6 +1,7 @@
 package com.ukream.service;
 
 import com.ukream.dto.LoginFormDTO;
+import com.ukream.dto.PageRequestDTO;
 import com.ukream.dto.UserDTO;
 import com.ukream.error.exception.DuplicatedEmailException;
 import com.ukream.error.exception.LoginFailureException;
@@ -10,6 +11,7 @@ import com.ukream.mapper.UserMapper;
 import com.ukream.util.SHA256Util;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +21,9 @@ public class AdminService {
   private final AdminMapper adminMapper;
   private final UserMapper userMapper;
 
-  public List<UserDTO> getUsers() {
-    return adminMapper.getUsers();
+  public List<UserDTO> getUsers(PageRequestDTO pageRequestDTO) {
+    RowBounds rowBounds = pageRequestDTO.getRowBounds();
+    return adminMapper.getUsers(rowBounds);
   }
 
   public UserDTO getUser(Long userId) {
@@ -34,10 +37,10 @@ public class AdminService {
   public void createAdmin(UserDTO user) {
     user.setPassword(SHA256Util.generateSha256(user.getPassword()));
     try {
-    adminMapper.createAdmin(user);
+      adminMapper.createAdmin(user);
     } catch (DataIntegrityViolationException e) {
       throw new DuplicatedEmailException("중복된 이메일 입니다.");
-  }
+    }
   }
 
   public UserDTO login(LoginFormDTO input) {
