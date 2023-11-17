@@ -1,13 +1,13 @@
 package com.ukream.error;
 
 import com.ukream.error.exception.BrandNotFoundException;
+import com.ukream.error.exception.DuplicatedBrandNameException;
 import com.ukream.error.exception.DuplicatedEmailException;
 import com.ukream.error.exception.LoginFailureException;
 import com.ukream.error.exception.LoginRequiredException;
 import com.ukream.error.exception.UserNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -63,6 +63,12 @@ public class ErrorController {
   @ExceptionHandler(BrandNotFoundException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<String> handleBrandNotFoundException(BrandNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(DuplicatedBrandNameException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<String> handleDuplicatedBrandNameException(DuplicatedBrandNameException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
 }

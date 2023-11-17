@@ -2,6 +2,7 @@ package com.ukream.service;
 
 import com.ukream.dto.BrandDTO;
 import com.ukream.error.exception.BrandNotFoundException;
+import com.ukream.error.exception.DuplicatedBrandNameException;
 import com.ukream.mapper.BrandMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,11 @@ public class BrandService {
   private final BrandMapper brandMapper;
 
   public void createBrand(BrandDTO brand) {
-    brandMapper.createBrand(brand);
+    try {
+      brandMapper.createBrand(brand);
+    } catch (DataIntegrityViolationException e) {
+      throw new DuplicatedBrandNameException("중복된 브랜드명 입니다.");
+    }
   }
 
   public List<BrandDTO> getBrands() {
