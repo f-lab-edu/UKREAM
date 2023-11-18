@@ -1,7 +1,9 @@
 package com.ukream.service;
 
 import com.ukream.dto.LoginFormDTO;
+import com.ukream.dto.PageRequestDTO;
 import com.ukream.dto.UserDTO;
+import com.ukream.error.exception.DuplicatedEmailException;
 import com.ukream.error.exception.LoginFailureException;
 import com.ukream.error.exception.UserNotFoundException;
 import com.ukream.mapper.AdminMapper;
@@ -9,6 +11,8 @@ import com.ukream.mapper.UserMapper;
 import com.ukream.util.SHA256Util;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.session.RowBounds;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,8 +21,9 @@ public class AdminService {
   private final AdminMapper adminMapper;
   private final UserMapper userMapper;
 
-  public List<UserDTO> getUsers() {
-    return adminMapper.getUsers();
+  public List<UserDTO> getUsers(PageRequestDTO pageRequestDTO) {
+    RowBounds rowBounds = pageRequestDTO.getRowBounds();
+    return adminMapper.getUsers(rowBounds);
   }
 
   public UserDTO getUser(Long userId) {
@@ -30,14 +35,12 @@ public class AdminService {
   }
 
   public void createAdmin(UserDTO user) {
-    isDuplicatedEmail(user.getEmail());
     user.setPassword(SHA256Util.generateSha256(user.getPassword()));
-    adminMapper.createAdmin(user);
-  }
-
-  
-  public boolean isDuplicatedEmail(String email) {
-    return userMapper.checkDuplicatedEmail(email);
+    try {
+      adminMapper.createAdmin(user);
+    } catch (DataIntegrityViolationException e) {
+      throw new DuplicatedEmailException("중복된 이메일 입니다.");
+    }
   }
 
   public UserDTO login(LoginFormDTO input) {

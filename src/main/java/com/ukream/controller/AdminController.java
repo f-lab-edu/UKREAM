@@ -2,6 +2,7 @@ package com.ukream.controller;
 
 import com.ukream.annotation.LoginCheck;
 import com.ukream.dto.LoginFormDTO;
+import com.ukream.dto.PageRequestDTO;
 import com.ukream.dto.UserDTO;
 import com.ukream.service.AdminService;
 import com.ukream.util.SessionUtil;
@@ -11,12 +12,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,16 +30,15 @@ public class AdminController {
    */
   @LoginCheck(type = LoginCheck.UserType.ADMIN)
   @GetMapping("/users")
-  public ResponseEntity<List<UserDTO>> getUsers() {
-
-    List<UserDTO> users = adminService.getUsers();
+  public ResponseEntity<List<UserDTO>> getUsers(@ModelAttribute PageRequestDTO pageRequestDTO) {
+    List<UserDTO> users = adminService.getUsers(pageRequestDTO);
     return ResponseEntity.ok(users);
   }
 
   /**
    * 유저 조회
    *
-   * 어드민 권한을 가진 사용자에게만 접근이 허용됩니다.
+   * <p>어드민 권한을 가진 사용자에게만 접근이 허용됩니다.
    *
    * @return HTTP 상태 코드 200 (OK)와 유저 정보
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
@@ -59,7 +54,7 @@ public class AdminController {
   /**
    * 어드민 생성
    *
-   * 어드민 권한을 가진 사용자에게만 접근이 허용됩니다.
+   * <p>어드민 권한을 가진 사용자에게만 접근이 허용됩니다.
    *
    * @return HTTP 상태 코드 200 (OK)
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
