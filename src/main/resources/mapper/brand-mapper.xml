@@ -1,25 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ukream.mapper.BrandMapper">
+	<resultMap id="brandDTO" type="com.ukream.dto.BrandDTO">
+		<id property="brandId" column="brand_id" />
+		<result property="englishName" column="english_name" />
+		<result property="koreanName" column="korean_name" />
+		<result property="imagePath" column="image_path" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
 	<insert id="createBrand" parameterType="BrandDTO">
 		INSERT INTO brand(create_date, modify_date,
 		english_name, korean_name, image_path) VALUES (#{createDate}, #{modifyDate}, #{englishName},
 		#{koreanName}, #{imagePath});
 	</insert>
-	<select id="getBrands" resultType="BrandDTO">
+	<select id="getBrands" resultMap="brandDTO">
 		SELECT brand_id brandId, english_name englishName,
 		korean_name koreanName, image_path imagePath, create_date createDate, modify_date modifyDate
 		FROM brand WHERE is_deleted != 1;
 	</select>
-	<select id="getBrand" parameterType="Long" resultType="BrandDTO">
-		SELECT brand_id brandId, english_name englishName,
-		korean_name koreanName, image_path imagePath, create_date createDate, modify_date modifyDate
+	<select id="getBrand" parameterType="Long" resultMap="brandDTO">
+		SELECT brand_id, english_name,
+		korean_name, image_path,is_deleted, create_date, modify_date
 		FROM brand WHERE brand_id = #{brandId} AND is_deleted != 1;
 	</select>
-	<delete id="deleteBrand" parameterType="Long" >
+	<delete id="deleteBrand" parameterType="Long">
 		UPDATE brand SET is_deleted = TRUE WHERE brand_id=#{brandId};
 	</delete>
-	<update id="updateBrand" parameterType="BrandDTO" >
+	<update id="updateBrand" parameterType="BrandDTO">
 		UPDATE brand SET create_date=#{createDate}, modify_date=#{modifyDate}, english_name=#{englishName}, korean_name=#{koreanName}, image_path=#{imagePath} WHERE brand_id=#{brandId};
 	</update>
 </mapper>
