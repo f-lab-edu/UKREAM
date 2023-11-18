@@ -15,8 +15,7 @@ public class ProductDTO {
   @Setter private Long brandId;
   private LocalDateTime releaseDate;
   private String modelNumber;
-  private String mainCategory;
-  private String subCategory;
+  private String mainColor;
   private Integer releasePrice;
   private String size;
   private LocalDateTime createDate;
@@ -30,5 +29,7 @@ public class ProductDTO {
 
   private String imagePath;
   private String gender;
+  private String mainCategory;
+  private String subCategory;
   @Setter private boolean isDeleted;
 }
