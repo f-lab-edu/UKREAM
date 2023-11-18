@@ -7,6 +7,7 @@ import com.ukream.mapper.BrandMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.dao.DataIntegrityViolationException;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +44,13 @@ public class BrandService {
   public void updateBrand(BrandDTO brand) {
     int updatedRows = brandMapper.updateBrand(brand);
     if (updatedRows == 0) {
+      throw new BrandNotFoundException("해당 브랜드를 찾을 수 없습니다.");
+    }
+  }
+
+  public void checkBrandExists(Long brandId) {
+    BrandDTO brand = brandMapper.getBrand(brandId);
+    if (brand == null) {
       throw new BrandNotFoundException("해당 브랜드를 찾을 수 없습니다.");
     }
   }
