@@ -1,5 +1,6 @@
 package com.ukream.error;
 
+import com.ukream.error.exception.AddressNotFoundException;
 import com.ukream.error.exception.BrandNotFoundException;
 import com.ukream.error.exception.DuplicatedBrandNameException;
 import com.ukream.error.exception.DuplicatedEmailException;
@@ -83,6 +84,12 @@ public class ErrorController {
   @ExceptionHandler(ProductNotFoundException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<String> handleProductNotFoundException(ProductNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(AddressNotFoundException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<String> handleAddressNotFoundException(AddressNotFoundException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
 }

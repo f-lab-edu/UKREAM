@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ukream.mapper.AddressMapper">
+	<resultMap id="addressDTO" type="com.ukream.dto.AddressDTO">
+		<id property="addressId" column="address_id" />
+		<result property="name" column="name" />
+		<result property="address" column="address" />
+		<result property="zipcode" column="zipcode" />
+		<result property="detailedAddress" column="detailed_address" />
+		<result property="defaultAddressYN" column="default_address_yn" />
+		<result property="userId" column="user_id" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<insert id="createAddress" parameterType="AddressDTO">
+		INSERT INTO address (
+		name, address, zipcode, detailed_address,
+		default_address_yn, user_id, create_date, modify_date
+		) VALUES (
+		#{name}, #{address}, #{zipcode}, #{detailedAddress},
+		#{defaultAddressYn}, #{userId}, #{createDate}, #{modifyDate}
+		)
+	</insert>
+	<select id="getAddress" parameterType="Long" resultMap="addressDTO">
+		SELECT address_id, name, address, zipcode, detailed_address, default_address_yn, user_id, create_date, modify_date, is_deleted FROM address WHERE user_id = #{userId}
+	</select>
+
+    <select id="getAddressById" parameterType="Long" resultMap="addressDTO">
+		SELECT address_id, name, address, zipcode, detailed_address, default_address_yn, user_id, create_date, modify_date, is_deleted FROM address WHERE address_id = #{addressId}
+	</select>
+</mapper>
