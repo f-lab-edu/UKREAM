@@ -21,7 +21,7 @@ public class ProductService {
     try {
       productMapper.createProduct(product);
     } catch (DataIntegrityViolationException e) {
-      throw new DuplicatedModelNumberException("중복된 모델번호 입니다.");
+      throw new DuplicatedModelNumberException();
     }
   }
 
@@ -33,7 +33,7 @@ public class ProductService {
   public ProductDTO getProduct(Long productId) {
     ProductDTO product = productMapper.getProduct(productId);
     if (product == null) {
-      throw new ProductNotFoundException("해당 상품을 찾을 수 없습니다.");
+      throw new ProductNotFoundException();
     }
     return product;
   }
@@ -41,14 +41,14 @@ public class ProductService {
   public void deleteProduct(Long productId) {
     int deletedRows = productMapper.deleteProduct(productId);
     if (deletedRows == 0) {
-      throw new ProductNotFoundException("해당 상품을 찾을 수 없습니다.");
+      throw new ProductNotFoundException();
     }
   }
 
   public void updateProduct(ProductDTO product) {
     int updatedRows = productMapper.updateProduct(product);
     if (updatedRows == 0) {
-      throw new ProductNotFoundException("해당 상품을 찾을 수 없습니다.");
+      throw new ProductNotFoundException();
     }
   }
 }
