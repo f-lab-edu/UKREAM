@@ -1,5 +1,6 @@
 package com.ukream.mapper;
 
+
 import com.ukream.dto.LoginFormDTO;
 import com.ukream.dto.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,4 +14,7 @@ public interface UserMapper {
 
 
   public UserDTO findByEmailAndPassword(LoginFormDTO user);
+
+  public UserDTO getUserInfo(Long userId);
+  
 }
