@@ -5,7 +5,6 @@ import com.ukream.error.exception.LoginFailureException;
 import com.ukream.error.exception.LoginRequiredException;
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -39,8 +38,17 @@ public class ErrorController {
     return ResponseEntity.badRequest().body(errors);
   }
 
-  @ExceptionHandler(DataIntegrityViolationException.class)
-  public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
-      return new ResponseEntity<>("중복된 이메일이 이미 존재합니다.", HttpStatus.BAD_REQUEST);
+  @ExceptionHandler(LoginRequiredException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<String> handleLoginRequiredException(LoginRequiredException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
+
+  @ExceptionHandler(LoginFailureException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<String> handleLoginFailureException(LoginFailureException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
+
+  
 }

@@ -16,4 +16,17 @@
         VALUES(#{email}, #{password}, #{createDate})
     </insert>
 
+
+    <select id="findByEmailAndPassword" parameterType="UserDTO" resultType="UserDTO">
+        SELECT *,
+        user_id userId
+        FROM USER
+        WHERE  email = #{email}
+        AND password = #{password}
+    </select>
+
+
+
 </mapper>
+   
+
