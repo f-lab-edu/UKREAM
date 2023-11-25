@@ -22,11 +22,26 @@
 		#{defaultAddressYn}, #{userId}, #{createDate}, #{modifyDate}
 		)
 	</insert>
-	<select id="getAddress" parameterType="Long" resultMap="addressDTO">
+	<select id="getAddressList" parameterType="Long" resultMap="addressDTO">
 		SELECT address_id, name, address, zipcode, detailed_address, default_address_yn, user_id, create_date, modify_date, is_deleted FROM address WHERE user_id = #{userId}
 	</select>
-
-    <select id="getAddressById" parameterType="Long" resultMap="addressDTO">
+	<select id="getAddress" parameterType="Long" resultMap="addressDTO">
 		SELECT address_id, name, address, zipcode, detailed_address, default_address_yn, user_id, create_date, modify_date, is_deleted FROM address WHERE address_id = #{addressId}
 	</select>
+	<delete id="deleteAddress" parameterType="Long">
+		UPDATE address SET is_deleted = TRUE WHERE address_id=#{addressId};
+	</delete>
+	<update id="updateProduct" parameterType="ProductDTO">
+		UPDATE address
+		SET
+		name = #{name},
+		address = #{address},
+		zipcode = #{zipcode},
+		detailed_address = #{detailedAddress},
+		default_address_yn = #{defaultAddressYn},
+		user_id = #{userId},
+		create_date = #{createDate},
+		modify_date = #{modifyDate}
+		WHERE address_id = #{addressId}
+	</update>
 </mapper>
