@@ -1,11 +1,8 @@
 package com.ukream.service;
 
 import com.ukream.dto.AddressDTO;
-import com.ukream.dto.UserDTO;
 import com.ukream.error.exception.AddressNotFoundException;
-import com.ukream.error.exception.UserNotFoundException;
 import com.ukream.mapper.AddressMapper;
-import com.ukream.mapper.UserMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,26 +11,34 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AddressService {
   private final AddressMapper addressMapper;
-  private final UserMapper userMapper;
 
-  public void createAddress(AddressDTO address, Long userId) {
-    UserDTO user = userMapper.getUserInfo(userId);
-    if (user == null) {
-      throw new UserNotFoundException();
-    }
-    address.setUserId(userId);
+  public void createAddress(AddressDTO address) {
     addressMapper.createAddress(address);
   }
 
-  public List<AddressDTO> getAddress(Long userId) {
-    return addressMapper.getAddress(userId);
+  public List<AddressDTO> getAddressList(Long userId) {
+    return addressMapper.getAddressList(userId);
   }
 
-  public AddressDTO getAddressByIdAndUserId(Long addressId, Long userId) {
-    AddressDTO address = addressMapper.getAddressByIdAndUserId(addressId, userId);
+  public AddressDTO getAddress(Long addressId, Long userId) {
+    AddressDTO address = addressMapper.getAddress(addressId, userId);
     if (address == null) {
       throw new AddressNotFoundException();
     }
     return address;
+  }
+
+  public void deleteAddress(Long addressId) {
+    int deletedRows = addressMapper.deleteAddress(addressId);
+    if (deletedRows == 0) {
+      throw new AddressNotFoundException();
+    }
+  }
+
+  public void updateAddress(AddressDTO address) {
+    int updatedRows = addressMapper.updateAddress(address);
+    if (updatedRows == 0) {
+      throw new AddressNotFoundException();
+    }
   }
 }

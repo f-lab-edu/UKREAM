@@ -12,7 +12,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 public class AddressDTO {
-  private Long addressId;
+  @Setter private Long addressId;
 
   @NotNull(message = "이름은 필수입니다.")
   @Setter
