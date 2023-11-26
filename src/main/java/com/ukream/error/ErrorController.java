@@ -7,6 +7,7 @@ import com.ukream.error.exception.DuplicatedEmailException;
 import com.ukream.error.exception.DuplicatedModelNumberException;
 import com.ukream.error.exception.LoginFailureException;
 import com.ukream.error.exception.LoginRequiredException;
+import com.ukream.error.exception.PaymentInfoNotFoundException;
 import com.ukream.error.exception.ProductNotFoundException;
 import com.ukream.error.exception.UserNotFoundException;
 import java.util.HashMap;
@@ -90,6 +91,12 @@ public class ErrorController {
   @ExceptionHandler(AddressNotFoundException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<String> handleAddressNotFoundException(AddressNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(PaymentInfoNotFoundException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<String> handlePaymentInfoNotFoundException(PaymentInfoNotFoundException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
 }
