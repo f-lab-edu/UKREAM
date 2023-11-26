@@ -10,9 +10,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ukream.dto.AddressDTO;
 import com.ukream.dto.LoginFormDTO;
+import com.ukream.dto.PaymentInfoDTO;
 import com.ukream.dto.UserDTO;
 import com.ukream.error.exception.LoginFailureException;
 import com.ukream.service.AddressService;
+import com.ukream.service.PaymentInfoService;
 import com.ukream.service.UserService;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +34,8 @@ class UserControllerTest {
   @MockBean private UserService userService;
 
   @MockBean private AddressService addressService;
+
+  @MockBean private PaymentInfoService paymentInfoService;
 
   @Autowired private MockMvc mockMvc;
 
@@ -160,7 +164,7 @@ class UserControllerTest {
                 .content(new ObjectMapper().writeValueAsString(address)))
         .andExpect(status().isCreated())
         .andDo(print());
-        
+
     verify(userService, times(1)).checkUserExists(userId);
     verify(addressService, times(1)).createAddress(any(AddressDTO.class));
   }
@@ -246,5 +250,114 @@ class UserControllerTest {
         .andDo(print());
 
     verify(addressService, times(1)).updateAddress(any(AddressDTO.class));
+  }
+
+  @Test
+  void 결제_정보_생성_테스트() throws Exception {
+    PaymentInfoDTO paymentInfo =
+        PaymentInfoDTO.builder().userId(1L).cardCompanyName("test").cardNumber("12345").build();
+    Long userId = paymentInfo.getUserId();
+    MockHttpSession session = new MockHttpSession();
+    session.setAttribute("LOGIN_USER_ID", userId);
+
+    doNothing().when(userService).checkUserExists(userId);
+    doNothing().when(paymentInfoService).createPaymentInfo(any(PaymentInfoDTO.class));
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post("/users/paymentInfo")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(paymentInfo)))
+        .andExpect(status().isCreated())
+        .andDo(print());
+
+    verify(userService, times(1)).checkUserExists(userId);
+    verify(paymentInfoService, times(1)).createPaymentInfo(any(PaymentInfoDTO.class));
+  }
+
+  @Test
+  void 결제_정보_목록_조회_테스트() throws Exception {
+    PaymentInfoDTO paymentInfo =
+        PaymentInfoDTO.builder().userId(1L).cardCompanyName("test").cardNumber("12345").build();
+
+    List<PaymentInfoDTO> paymentInfoList = Arrays.asList(paymentInfo);
+
+    Long userId = 1L;
+    MockHttpSession session = new MockHttpSession();
+
+    session.setAttribute("LOGIN_USER_ID", userId);
+
+    doNothing().when(userService).checkUserExists(userId);
+    given(paymentInfoService.getPaymentInfoList(userId)).willReturn(paymentInfoList);
+
+    mockMvc
+        .perform(get("/users/paymentInfo").session(session))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].cardCompanyName").value("test"))
+        .andExpect(jsonPath("$[0].cardNumber").value("12345"));
+
+    verify(userService, times(1)).checkUserExists(userId);
+    verify(paymentInfoService, times(1)).getPaymentInfoList(userId);
+  }
+
+  @Test
+  void 결제_정보_조회_테스트() throws Exception {
+    PaymentInfoDTO paymentInfo =
+        PaymentInfoDTO.builder().userId(1L).cardCompanyName("test").cardNumber("12345").build();
+
+    Long paymentInfoId = 1L;
+    Long userId = 1L;
+    MockHttpSession session = new MockHttpSession();
+
+    session.setAttribute("LOGIN_USER_ID", userId);
+
+    doNothing().when(userService).checkUserExists(userId);
+    given(paymentInfoService.getPaymentInfo(paymentInfoId, userId)).willReturn(paymentInfo);
+
+    mockMvc
+        .perform(get("/users/paymentInfo/{paymentInfoId}", paymentInfoId).session(session))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.cardCompanyName").value("test"))
+        .andExpect(jsonPath("$.cardNumber").value("12345"));
+
+    verify(userService, times(1)).checkUserExists(userId);
+    verify(paymentInfoService, times(1)).getPaymentInfo(paymentInfoId, userId);
+  }
+
+  @Test
+  void 결제_정보_삭제_테스트() throws Exception {
+    Long paymentInfoId = 1L;
+
+    doNothing().when(paymentInfoService).deletePaymentInfo(paymentInfoId);
+
+    mockMvc
+        .perform(delete("/users/paymentInfo/{paymentInfoId}", paymentInfoId))
+        .andExpect(status().isOk());
+
+    verify(paymentInfoService, times(1)).deletePaymentInfo(paymentInfoId);
+  }
+
+  @Test
+  void 결제_정보_수정_테스트() throws Exception {
+
+    PaymentInfoDTO paymentInfo =
+        PaymentInfoDTO.builder().userId(1L).cardCompanyName("test").cardNumber("12345").build();
+
+    Long paymentInfoId = 1L;
+
+    paymentInfo.setPaymentInfoId(paymentInfoId);
+
+    doNothing().when(paymentInfoService).updatePaymentInfo(any(PaymentInfoDTO.class));
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.put("/users/paymentInfo/{paymentInfoId}", paymentInfoId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(paymentInfo)))
+        .andExpect(status().isOk())
+        .andDo(print());
+
+    verify(paymentInfoService, times(1)).updatePaymentInfo(any(PaymentInfoDTO.class));
   }
 }
