@@ -130,7 +130,7 @@ public class PaymentInfoServiceTest {
   }
 
   @Test
-  void 주소_수정_실패_테스트() {
+  void 결제_정보_수정_실패_테스트() {
 
     PaymentInfoDTO paymentInfo =
         PaymentInfoDTO.builder().userId(1L).cardCompanyName("test").cardNumber("12345").build();
