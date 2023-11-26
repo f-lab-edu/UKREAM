@@ -31,7 +31,7 @@
 	<delete id="deleteAddress" parameterType="Long">
 		UPDATE address SET is_deleted = TRUE WHERE address_id=#{addressId};
 	</delete>
-	<update id="updateProduct" parameterType="ProductDTO">
+	<update id="updateAddress" parameterType="AddressDTO">
 		UPDATE address
 		SET
 		name = #{name},

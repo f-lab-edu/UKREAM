@@ -95,7 +95,6 @@ public class UserController {
       @Valid @RequestBody AddressDTO address, HttpSession session) {
     Long userId = SessionUtil.getLoginUserId(session);
     userService.checkUserExists(userId);
-    address.setUserId(userId);
     addressService.createAddress(address);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
@@ -157,10 +156,9 @@ public class UserController {
    * @return HTTP 상태 코드 200 (OK)
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
-  @LoginCheck(type = LoginCheck.UserType.ADMIN)
+  @LoginCheck(type = LoginCheck.UserType.USER)
   @PutMapping("address/{addressId}")
-  ResponseEntity<Void> updateProduct(@PathVariable Long addressId, @Valid @RequestBody AddressDTO address) {
-    address.setAddressId(addressId);
+  ResponseEntity<Void> updateAddress(@PathVariable Long addressId, @Valid @RequestBody AddressDTO address) {
     addressService.updateAddress(address);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
