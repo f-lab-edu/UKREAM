@@ -16,8 +16,8 @@ public class AddressService {
     addressMapper.createAddress(address);
   }
 
-  public List<AddressDTO> getAddressList(Long userId) {
-    return addressMapper.getAddressList(userId);
+  public List<AddressDTO> getAddresses(Long userId) {
+    return addressMapper.getAddresses(userId);
   }
 
   public AddressDTO getAddress(Long addressId, Long userId) {

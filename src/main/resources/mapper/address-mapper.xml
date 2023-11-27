@@ -22,7 +22,7 @@
 		#{defaultAddressYn}, #{userId}, #{createDate}, #{modifyDate}
 		)
 	</insert>
-	<select id="getAddressList" parameterType="Long" resultMap="addressDTO">
+	<select id="getAddresses" parameterType="Long" resultMap="addressDTO">
 		SELECT address_id, name, address, zipcode, detailed_address, default_address_yn, user_id, create_date, modify_date, is_deleted FROM address WHERE user_id = #{userId}
 	</select>
 	<select id="getAddress" parameterType="Long" resultMap="addressDTO">

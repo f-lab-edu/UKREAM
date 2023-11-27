@@ -158,7 +158,7 @@ class UserControllerTest {
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/users/address")
+            MockMvcRequestBuilders.post("/users/addresses")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(address)))
@@ -182,16 +182,16 @@ class UserControllerTest {
     session.setAttribute("LOGIN_USER_ID", userId);
 
     doNothing().when(userService).checkUserExists(userId);
-    given(addressService.getAddressList(userId)).willReturn(addressList);
+    given(addressService.getAddresses(userId)).willReturn(addressList);
 
     mockMvc
-        .perform(get("/users/address").session(session))
+        .perform(get("/users/addresses").session(session))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].name").value("test"))
         .andExpect(jsonPath("$[0].address").value("addressTest"));
 
     verify(userService, times(1)).checkUserExists(userId);
-    verify(addressService, times(1)).getAddressList(userId);
+    verify(addressService, times(1)).getAddresses(userId);
   }
 
   @Test
@@ -209,7 +209,7 @@ class UserControllerTest {
     given(addressService.getAddress(addressId, userId)).willReturn(address);
 
     mockMvc
-        .perform(get("/users/address/{addressId}", addressId).session(session))
+        .perform(get("/users/addresses/{addressId}", addressId).session(session))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.name").value("test"))
         .andExpect(jsonPath("$.address").value("addressTest"));
@@ -224,7 +224,7 @@ class UserControllerTest {
 
     doNothing().when(addressService).deleteAddress(addressId);
 
-    mockMvc.perform(delete("/users/address/{addressId}", addressId)).andExpect(status().isOk());
+    mockMvc.perform(delete("/users/addresses/{addressId}", addressId)).andExpect(status().isOk());
 
     verify(addressService, times(1)).deleteAddress(addressId);
   }
@@ -243,7 +243,7 @@ class UserControllerTest {
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.put("/users/address/{addressId}", addressId)
+            MockMvcRequestBuilders.put("/users/addresses/{addressId}", addressId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(address)))
         .andExpect(status().isOk())

@@ -47,13 +47,13 @@ public class AddressServiceTest {
 
     List<AddressDTO> addressList = Arrays.asList(address);
 
-    given(addressMapper.getAddressList(userId)).willReturn(addressList);
+    given(addressMapper.getAddresses(userId)).willReturn(addressList);
 
-    List<AddressDTO> result = assertDoesNotThrow(() -> addressService.getAddressList(userId));
+    List<AddressDTO> result = assertDoesNotThrow(() -> addressService.getAddresses(userId));
 
     assertEquals(addressList, result);
 
-    verify(addressMapper, times(1)).getAddressList(userId);
+    verify(addressMapper, times(1)).getAddresses(userId);
   }
 
   @Test

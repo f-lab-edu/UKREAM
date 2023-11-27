@@ -92,7 +92,7 @@ public class UserController {
    * @param session 사용자 세션
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
-  @PostMapping("/address")
+  @PostMapping("/addresses")
   @LoginCheck(type = LoginCheck.UserType.USER)
   public ResponseEntity<Void> createAddress(
       @Valid @RequestBody AddressDTO address, HttpSession session) {
@@ -110,13 +110,13 @@ public class UserController {
    * @return HTTP 상태 코드 200 (OK)와 주소 목록
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
-  @GetMapping("/address")
+  @GetMapping("/addresses")
   @LoginCheck(type = LoginCheck.UserType.USER)
-  public ResponseEntity<List<AddressDTO>> getAddressList(HttpSession session) {
+  public ResponseEntity<List<AddressDTO>> getAddresses(HttpSession session) {
     Long userId = SessionUtil.getLoginUserId(session);
     userService.checkUserExists(userId);
-    List<AddressDTO> address = addressService.getAddressList(userId);
-    return ResponseEntity.ok(address);
+    List<AddressDTO> addresses = addressService.getAddresses(userId);
+    return ResponseEntity.ok(addresses);
   }
 
   /**
@@ -127,7 +127,7 @@ public class UserController {
    * @return HTTP 상태 코드 200 (OK)와 주소 정보
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
-  @GetMapping("/address/{addressId}")
+  @GetMapping("/addresses/{addressId}")
   @LoginCheck(type = LoginCheck.UserType.USER)
   public ResponseEntity<AddressDTO> getAddress(@PathVariable Long addressId, HttpSession session) {
     Long userId = SessionUtil.getLoginUserId(session);
@@ -145,7 +145,7 @@ public class UserController {
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
   @LoginCheck(type = LoginCheck.UserType.USER)
-  @DeleteMapping("/address/{addressId}")
+  @DeleteMapping("/addresses/{addressId}")
   public ResponseEntity<Void> deleteAddress(@PathVariable Long addressId) {
     addressService.deleteAddress(addressId);
     return ResponseEntity.status(HttpStatus.OK).build();
@@ -160,7 +160,7 @@ public class UserController {
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
   @LoginCheck(type = LoginCheck.UserType.USER)
-  @PutMapping("address/{addressId}")
+  @PutMapping("addresses/{addressId}")
   ResponseEntity<Void> updateAddress(@PathVariable Long addressId, @Valid @RequestBody AddressDTO address) {
     addressService.updateAddress(address);
     return ResponseEntity.status(HttpStatus.OK).build();
