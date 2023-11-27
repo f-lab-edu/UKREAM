@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface AddressMapper {
   public void createAddress(AddressDTO address);
 
-  public List<AddressDTO> getAddressList(Long userId);
+  public List<AddressDTO> getAddresses(Long userId);
 
   public AddressDTO getAddress(Long addressId,Long userId);
 
