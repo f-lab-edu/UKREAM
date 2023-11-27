@@ -174,7 +174,7 @@ public class UserController {
    * @param session 사용자 세션
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
-  @PostMapping("/payment-info")
+  @PostMapping("/payment-infos")
   @LoginCheck(type = LoginCheck.UserType.USER)
   public ResponseEntity<Void> createPaymentInfo(
       @Valid @RequestBody PaymentInfoDTO paymentInfo, HttpSession session) {
@@ -192,7 +192,7 @@ public class UserController {
    * @return HTTP 상태 코드 200 (OK)와 주소 목록
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
-  @GetMapping("/payment-info")
+  @GetMapping("/payment-infos")
   @LoginCheck(type = LoginCheck.UserType.USER)
   public ResponseEntity<List<PaymentInfoDTO>> getPaymentInfos(HttpSession session) {
     Long userId = SessionUtil.getLoginUserId(session);
@@ -209,7 +209,7 @@ public class UserController {
    * @return HTTP 상태 코드 200 (OK)와 주소 정보
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
-  @GetMapping("/payment-info/{paymentInfoId}")
+  @GetMapping("/payment-infos/{paymentInfoId}")
   @LoginCheck(type = LoginCheck.UserType.USER)
   public ResponseEntity<PaymentInfoDTO> getPaymentInfo(
       @PathVariable Long paymentInfoId, HttpSession session) {
@@ -228,7 +228,7 @@ public class UserController {
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
   @LoginCheck(type = LoginCheck.UserType.USER)
-  @DeleteMapping("/payment-info/{paymentInfoId}")
+  @DeleteMapping("/payment-infos/{paymentInfoId}")
   public ResponseEntity<Void> deletePaymentInfo(@PathVariable Long paymentInfoId) {
     paymentInfoService.deletePaymentInfo(paymentInfoId);
     return ResponseEntity.status(HttpStatus.OK).build();
@@ -243,7 +243,7 @@ public class UserController {
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
   @LoginCheck(type = LoginCheck.UserType.USER)
-  @PutMapping("payment-info/{paymentInfoId}")
+  @PutMapping("payment-infos/{paymentInfoId}")
   ResponseEntity<Void> updatePaymentInfo(
       @PathVariable Long paymentInfoId, @Valid @RequestBody PaymentInfoDTO paymentInfo) {
     paymentInfoService.updatePaymentInfo(paymentInfo);

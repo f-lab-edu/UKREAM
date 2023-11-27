@@ -265,7 +265,7 @@ class UserControllerTest {
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/users/payment-info")
+            MockMvcRequestBuilders.post("/users/payment-infos")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(paymentInfo)))
@@ -292,7 +292,7 @@ class UserControllerTest {
     given(paymentInfoService.getPaymentInfos(userId)).willReturn(paymentInfoList);
 
     mockMvc
-        .perform(get("/users/payment-info").session(session))
+        .perform(get("/users/payment-infos").session(session))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].cardCompanyName").value("test"))
         .andExpect(jsonPath("$[0].cardNumber").value("12345"));
@@ -316,7 +316,7 @@ class UserControllerTest {
     given(paymentInfoService.getPaymentInfo(paymentInfoId, userId)).willReturn(paymentInfo);
 
     mockMvc
-        .perform(get("/users/payment-info/{paymentInfoId}", paymentInfoId).session(session))
+        .perform(get("/users/payment-infos/{paymentInfoId}", paymentInfoId).session(session))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.cardCompanyName").value("test"))
         .andExpect(jsonPath("$.cardNumber").value("12345"));
@@ -332,7 +332,7 @@ class UserControllerTest {
     doNothing().when(paymentInfoService).deletePaymentInfo(paymentInfoId);
 
     mockMvc
-        .perform(delete("/users/payment-info/{paymentInfoId}", paymentInfoId))
+        .perform(delete("/users/payment-infos/{paymentInfoId}", paymentInfoId))
         .andExpect(status().isOk());
 
     verify(paymentInfoService, times(1)).deletePaymentInfo(paymentInfoId);
@@ -352,7 +352,7 @@ class UserControllerTest {
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.put("/users/payment-info/{paymentInfoId}", paymentInfoId)
+            MockMvcRequestBuilders.put("/users/payment-infos/{paymentInfoId}", paymentInfoId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(paymentInfo)))
         .andExpect(status().isOk())
