@@ -174,7 +174,7 @@ public class UserController {
    * @param session 사용자 세션
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
-  @PostMapping("/paymentInfo")
+  @PostMapping("/payment-info")
   @LoginCheck(type = LoginCheck.UserType.USER)
   public ResponseEntity<Void> createPaymentInfo(
       @Valid @RequestBody PaymentInfoDTO paymentInfo, HttpSession session) {
@@ -192,13 +192,13 @@ public class UserController {
    * @return HTTP 상태 코드 200 (OK)와 주소 목록
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
-  @GetMapping("/paymentInfo")
+  @GetMapping("/payment-info")
   @LoginCheck(type = LoginCheck.UserType.USER)
-  public ResponseEntity<List<PaymentInfoDTO>> getPaymentInfoList(HttpSession session) {
+  public ResponseEntity<List<PaymentInfoDTO>> getPaymentInfos(HttpSession session) {
     Long userId = SessionUtil.getLoginUserId(session);
     userService.checkUserExists(userId);
-    List<PaymentInfoDTO> paymentInfoList = paymentInfoService.getPaymentInfoList(userId);
-    return ResponseEntity.ok(paymentInfoList);
+    List<PaymentInfoDTO> paymentInfos = paymentInfoService.getPaymentInfos(userId);
+    return ResponseEntity.ok(paymentInfos);
   }
 
   /**
@@ -209,7 +209,7 @@ public class UserController {
    * @return HTTP 상태 코드 200 (OK)와 주소 정보
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
-  @GetMapping("/paymentInfo/{paymentInfoId}")
+  @GetMapping("/payment-info/{paymentInfoId}")
   @LoginCheck(type = LoginCheck.UserType.USER)
   public ResponseEntity<PaymentInfoDTO> getPaymentInfo(
       @PathVariable Long paymentInfoId, HttpSession session) {
@@ -228,7 +228,7 @@ public class UserController {
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
   @LoginCheck(type = LoginCheck.UserType.USER)
-  @DeleteMapping("/paymentInfo/{paymentInfoId}")
+  @DeleteMapping("/payment-info/{paymentInfoId}")
   public ResponseEntity<Void> deletePaymentInfo(@PathVariable Long paymentInfoId) {
     paymentInfoService.deletePaymentInfo(paymentInfoId);
     return ResponseEntity.status(HttpStatus.OK).build();
@@ -243,7 +243,7 @@ public class UserController {
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
   @LoginCheck(type = LoginCheck.UserType.USER)
-  @PutMapping("paymentInfo/{paymentInfoId}")
+  @PutMapping("payment-info/{paymentInfoId}")
   ResponseEntity<Void> updatePaymentInfo(
       @PathVariable Long paymentInfoId, @Valid @RequestBody PaymentInfoDTO paymentInfo) {
     paymentInfoService.updatePaymentInfo(paymentInfo);

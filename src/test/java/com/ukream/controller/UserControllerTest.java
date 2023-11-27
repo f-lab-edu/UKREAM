@@ -265,7 +265,7 @@ class UserControllerTest {
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/users/paymentInfo")
+            MockMvcRequestBuilders.post("/users/payment-info")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(paymentInfo)))
@@ -289,16 +289,16 @@ class UserControllerTest {
     session.setAttribute("LOGIN_USER_ID", userId);
 
     doNothing().when(userService).checkUserExists(userId);
-    given(paymentInfoService.getPaymentInfoList(userId)).willReturn(paymentInfoList);
+    given(paymentInfoService.getPaymentInfos(userId)).willReturn(paymentInfoList);
 
     mockMvc
-        .perform(get("/users/paymentInfo").session(session))
+        .perform(get("/users/payment-info").session(session))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].cardCompanyName").value("test"))
         .andExpect(jsonPath("$[0].cardNumber").value("12345"));
 
     verify(userService, times(1)).checkUserExists(userId);
-    verify(paymentInfoService, times(1)).getPaymentInfoList(userId);
+    verify(paymentInfoService, times(1)).getPaymentInfos(userId);
   }
 
   @Test
@@ -316,7 +316,7 @@ class UserControllerTest {
     given(paymentInfoService.getPaymentInfo(paymentInfoId, userId)).willReturn(paymentInfo);
 
     mockMvc
-        .perform(get("/users/paymentInfo/{paymentInfoId}", paymentInfoId).session(session))
+        .perform(get("/users/payment-info/{paymentInfoId}", paymentInfoId).session(session))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.cardCompanyName").value("test"))
         .andExpect(jsonPath("$.cardNumber").value("12345"));
@@ -332,7 +332,7 @@ class UserControllerTest {
     doNothing().when(paymentInfoService).deletePaymentInfo(paymentInfoId);
 
     mockMvc
-        .perform(delete("/users/paymentInfo/{paymentInfoId}", paymentInfoId))
+        .perform(delete("/users/payment-info/{paymentInfoId}", paymentInfoId))
         .andExpect(status().isOk());
 
     verify(paymentInfoService, times(1)).deletePaymentInfo(paymentInfoId);
@@ -352,7 +352,7 @@ class UserControllerTest {
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.put("/users/paymentInfo/{paymentInfoId}", paymentInfoId)
+            MockMvcRequestBuilders.put("/users/payment-info/{paymentInfoId}", paymentInfoId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(paymentInfo)))
         .andExpect(status().isOk())

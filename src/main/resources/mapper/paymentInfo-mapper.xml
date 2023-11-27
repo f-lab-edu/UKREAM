@@ -28,7 +28,7 @@
 		#{modifyDate}
 		)
 	</insert>
-	<select id="getPaymentInfoList" parameterType="Long" resultMap="paymentInfoDTO">
+	<select id="getPaymentInfos" parameterType="Long" resultMap="paymentInfoDTO">
 		SELECT payment_info_id, user_id, card_company_name, card_number, default_payment_yn, create_date, modify_date FROM payment_info WHERE user_id = #{userId}
 	</select>
 	<select id="getPaymentInfo" parameterType="Long" resultMap="paymentInfoDTO">

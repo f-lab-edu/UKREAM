@@ -16,8 +16,8 @@ public class PaymentInfoService {
     paymentInfoMapper.createPaymentInfo(paymentInfo);
   }
 
-  public List<PaymentInfoDTO> getPaymentInfoList(Long userId) {
-    return paymentInfoMapper.getPaymentInfoList(userId);
+  public List<PaymentInfoDTO> getPaymentInfos(Long userId) {
+    return paymentInfoMapper.getPaymentInfos(userId);
   }
 
   public PaymentInfoDTO getPaymentInfo(Long paymentInfoId, Long userId) {

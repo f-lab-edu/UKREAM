@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface PaymentInfoMapper {
   public void createPaymentInfo(PaymentInfoDTO paymentInfo);
 
-  public List<PaymentInfoDTO> getPaymentInfoList(Long userId);
+  public List<PaymentInfoDTO> getPaymentInfos(Long userId);
 
   public PaymentInfoDTO getPaymentInfo(Long paymentInfoId, Long userId);
 

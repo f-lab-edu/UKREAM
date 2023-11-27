@@ -47,14 +47,14 @@ public class PaymentInfoServiceTest {
 
     List<PaymentInfoDTO> paymentInfoList = Arrays.asList(paymentInfo);
 
-    given(paymentInfoMapper.getPaymentInfoList(userId)).willReturn(paymentInfoList);
+    given(paymentInfoMapper.getPaymentInfos(userId)).willReturn(paymentInfoList);
 
     List<PaymentInfoDTO> result =
-        assertDoesNotThrow(() -> paymentInfoService.getPaymentInfoList(userId));
+        assertDoesNotThrow(() -> paymentInfoService.getPaymentInfos(userId));
 
     assertEquals(paymentInfoList, result);
 
-    verify(paymentInfoMapper, times(1)).getPaymentInfoList(userId);
+    verify(paymentInfoMapper, times(1)).getPaymentInfos(userId);
   }
 
   @Test
