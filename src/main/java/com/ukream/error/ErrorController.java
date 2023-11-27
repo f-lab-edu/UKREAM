@@ -9,6 +9,7 @@ import com.ukream.error.exception.LoginFailureException;
 import com.ukream.error.exception.LoginRequiredException;
 import com.ukream.error.exception.PaymentInfoNotFoundException;
 import com.ukream.error.exception.ProductNotFoundException;
+import com.ukream.error.exception.SalesAccountNotFoundException;
 import com.ukream.error.exception.UserNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +46,6 @@ public class ErrorController {
     return ResponseEntity.badRequest().body(errors);
   }
 
-
   @ExceptionHandler(LoginRequiredException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<String> handleLoginRequiredException(LoginRequiredException ex) {
@@ -72,13 +72,15 @@ public class ErrorController {
 
   @ExceptionHandler(DuplicatedBrandNameException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ResponseEntity<String> handleDuplicatedBrandNameException(DuplicatedBrandNameException ex) {
+  public ResponseEntity<String> handleDuplicatedBrandNameException(
+      DuplicatedBrandNameException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
 
   @ExceptionHandler(DuplicatedModelNumberException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ResponseEntity<String> handleDuplicatedModelNumberException(DuplicatedModelNumberException ex) {
+  public ResponseEntity<String> handleDuplicatedModelNumberException(
+      DuplicatedModelNumberException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
 
@@ -96,7 +98,15 @@ public class ErrorController {
 
   @ExceptionHandler(PaymentInfoNotFoundException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ResponseEntity<String> handlePaymentInfoNotFoundException(PaymentInfoNotFoundException ex) {
+  public ResponseEntity<String> handlePaymentInfoNotFoundException(
+      PaymentInfoNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(SalesAccountNotFoundException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<String> handleSalesAccountNotFoundException(
+      SalesAccountNotFoundException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
 }
