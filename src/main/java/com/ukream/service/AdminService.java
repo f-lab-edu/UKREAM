@@ -1,31 +1,43 @@
 package com.ukream.service;
 
 import com.ukream.dto.LoginFormDTO;
+import com.ukream.dto.PageRequestDTO;
 import com.ukream.dto.UserDTO;
 import com.ukream.error.exception.DuplicatedEmailException;
 import com.ukream.error.exception.LoginFailureException;
+import com.ukream.error.exception.UserNotFoundException;
+import com.ukream.mapper.AdminMapper;
 import com.ukream.mapper.UserMapper;
 import com.ukream.util.SHA256Util;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
-
+public class AdminService {
+  private final AdminMapper adminMapper;
   private final UserMapper userMapper;
 
-  /**
-   * 회원 가입
-   *
-   * @param userDTO 회원정보
-   * @throws DuplicatedEmailException 이메일이 이미 존재할 경우 발생합니다.
-   */
-  public void createUser(UserDTO user) {
+  public List<UserDTO> getUsers(PageRequestDTO pageRequestDTO) {
+    RowBounds rowBounds = pageRequestDTO.getRowBounds();
+    return adminMapper.getUsers(rowBounds);
+  }
+
+  public UserDTO getUser(Long userId) {
+    UserDTO user = adminMapper.getUser(userId);
+    if (user == null) {
+      throw new UserNotFoundException("해당 유저를 찾을 수 없습니다.");
+    }
+    return user;
+  }
+
+  public void createAdmin(UserDTO user) {
     user.setPassword(SHA256Util.generateSha256(user.getPassword()));
     try {
-      userMapper.createUser(user);
+      adminMapper.createAdmin(user);
     } catch (DataIntegrityViolationException e) {
       throw new DuplicatedEmailException("중복된 이메일 입니다.");
     }
@@ -34,7 +46,7 @@ public class UserService {
   public UserDTO login(LoginFormDTO input) {
     input.setPassword(SHA256Util.generateSha256(input.getPassword()));
 
-    UserDTO user = userMapper.findByEmailAndPassword(input);
+    UserDTO user = adminMapper.findByEmailAndPassword(input);
 
     if (user == null) {
       throw new LoginFailureException("유효하지 않은 이메일 또는 비밀번호입니다.");
