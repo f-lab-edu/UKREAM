@@ -26,4 +26,10 @@ Java, SpringBoot, Gradle, Mybatis, Docker, Mysql, Elasticsearch, LogStash, Kiban
 2. 리뷰어가 코드를 승인하면 `main` 브랜치로 머지합니다.
 
 
+### 기술적 이슈 및 해결 과정
+
+[중복되는 로그인 체크 로직 AOP 분리](https://www.notion.so/AOP-a9baff5c12d7490c83e49f36b89210d2?pvs=4)
+
+
+
 
