@@ -32,6 +32,8 @@ Java, SpringBoot, Gradle, Mybatis, Docker, Mysql, Elasticsearch, LogStash, Kiban
 
 [Elasticsearch를 이용한 검색 기능](https://www.notion.so/Elasticsearch-f136ca2d556542d9a791b3a0fb8af27b)
 
+[Logstash를 이용한 데이터 동기화](https://northern-catshark-6f5.notion.site/Logstash-47dd5f12859146f194ee374b6f782d09)
+
 
 
 
