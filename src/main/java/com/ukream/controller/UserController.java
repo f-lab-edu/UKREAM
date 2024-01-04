@@ -247,7 +247,7 @@ public class UserController {
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
    */
   @LoginCheck(type = LoginCheck.UserType.USER)
-  @PutMapping("payment-infos/{paymentInfoId}")
+  @PutMapping("/payment-infos/{paymentInfoId}")
   ResponseEntity<Void> updatePaymentInfo(
       @PathVariable Long paymentInfoId, @Valid @RequestBody PaymentInfoDTO paymentInfo) {
     paymentInfoService.updatePaymentInfo(paymentInfo);
