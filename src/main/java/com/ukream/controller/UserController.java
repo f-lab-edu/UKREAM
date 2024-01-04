@@ -3,8 +3,10 @@ package com.ukream.controller;
 import com.ukream.annotation.LoginCheck;
 import com.ukream.dto.AddressDTO;
 import com.ukream.dto.LoginFormDTO;
+import com.ukream.dto.PaymentInfoDTO;
 import com.ukream.dto.UserDTO;
 import com.ukream.service.AddressService;
+import com.ukream.service.PaymentInfoService;
 import com.ukream.service.UserService;
 import com.ukream.util.SessionUtil;
 import java.util.List;
@@ -29,6 +31,7 @@ public class UserController {
 
   private final UserService userService;
   private final AddressService addressService;
+  private final PaymentInfoService paymentInfoService;
 
   /**
    * 회원 가입
@@ -126,17 +129,17 @@ public class UserController {
    */
   @GetMapping("/addresses/{addressId}")
   @LoginCheck(type = LoginCheck.UserType.USER)
-  public ResponseEntity<AddressDTO> getAddress(@PathVariable Long addressId,HttpSession session) {
+  public ResponseEntity<AddressDTO> getAddress(@PathVariable Long addressId, HttpSession session) {
     Long userId = SessionUtil.getLoginUserId(session);
     userService.checkUserExists(userId);
-    AddressDTO address = addressService.getAddress(addressId,userId);
+    AddressDTO address = addressService.getAddress(addressId, userId);
     return ResponseEntity.ok(address);
   }
 
-   /**
+  /**
    * 주소 삭제
    *
-   * 사용자 권한을 가진 사용자에게만 접근이 허용됩니다.
+   * <p>사용자 권한을 가진 사용자에게만 접근이 허용됩니다.
    *
    * @return HTTP 상태 코드 200 (OK)
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
@@ -151,7 +154,7 @@ public class UserController {
   /**
    * 주소 수정
    *
-   * 사용자 권한을 가진 사용자에게만 접근이 허용됩니다.
+   * <p>사용자 권한을 가진 사용자에게만 접근이 허용됩니다.
    *
    * @return HTTP 상태 코드 200 (OK)
    * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
@@ -160,6 +163,90 @@ public class UserController {
   @PutMapping("addresses/{addressId}")
   ResponseEntity<Void> updateAddress(@PathVariable Long addressId, @Valid @RequestBody AddressDTO address) {
     addressService.updateAddress(address);
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  /**
+   * 결제 정보 생성
+   *
+   * <p>사용자 권한을 가진 사용자에게만 접근이 허용됩니다.
+   *
+   * @param session 사용자 세션
+   * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
+   */
+  @PostMapping("/payment-infos")
+  @LoginCheck(type = LoginCheck.UserType.USER)
+  public ResponseEntity<Void> createPaymentInfo(
+      @Valid @RequestBody PaymentInfoDTO paymentInfo, HttpSession session) {
+    Long userId = SessionUtil.getLoginUserId(session);
+    userService.checkUserExists(userId);
+    paymentInfoService.createPaymentInfo(paymentInfo);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  /**
+   * 결제 정보 목록 조회
+   *
+   * <p>사용자 권한을 가진 사용자에게만 접근이 허용됩니다.
+   *
+   * @return HTTP 상태 코드 200 (OK)와 주소 목록
+   * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
+   */
+  @GetMapping("/payment-infos")
+  @LoginCheck(type = LoginCheck.UserType.USER)
+  public ResponseEntity<List<PaymentInfoDTO>> getPaymentInfos(HttpSession session) {
+    Long userId = SessionUtil.getLoginUserId(session);
+    userService.checkUserExists(userId);
+    List<PaymentInfoDTO> paymentInfos = paymentInfoService.getPaymentInfos(userId);
+    return ResponseEntity.ok(paymentInfos);
+  }
+
+  /**
+   * 결제 정보 조회
+   *
+   * <p>사용자 권한을 가진 사용자에게만 접근이 허용됩니다.
+   *
+   * @return HTTP 상태 코드 200 (OK)와 주소 정보
+   * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
+   */
+  @GetMapping("/payment-infos/{paymentInfoId}")
+  @LoginCheck(type = LoginCheck.UserType.USER)
+  public ResponseEntity<PaymentInfoDTO> getPaymentInfo(
+      @PathVariable Long paymentInfoId, HttpSession session) {
+    Long userId = SessionUtil.getLoginUserId(session);
+    userService.checkUserExists(userId);
+    PaymentInfoDTO paymentInfo = paymentInfoService.getPaymentInfo(paymentInfoId, userId);
+    return ResponseEntity.ok(paymentInfo);
+  }
+
+  /**
+   * 결제 정보 삭제
+   *
+   * <p>사용자 권한을 가진 사용자에게만 접근이 허용됩니다.
+   *
+   * @return HTTP 상태 코드 200 (OK)
+   * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
+   */
+  @LoginCheck(type = LoginCheck.UserType.USER)
+  @DeleteMapping("/payment-infos/{paymentInfoId}")
+  public ResponseEntity<Void> deletePaymentInfo(@PathVariable Long paymentInfoId) {
+    paymentInfoService.deletePaymentInfo(paymentInfoId);
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  /**
+   * 결제 정보 수정
+   *
+   * <p>사용자 권한을 가진 사용자에게만 접근이 허용됩니다.
+   *
+   * @return HTTP 상태 코드 200 (OK)
+   * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
+   */
+  @LoginCheck(type = LoginCheck.UserType.USER)
+  @PutMapping("/payment-infos/{paymentInfoId}")
+  ResponseEntity<Void> updatePaymentInfo(
+      @PathVariable Long paymentInfoId, @Valid @RequestBody PaymentInfoDTO paymentInfo) {
+    paymentInfoService.updatePaymentInfo(paymentInfo);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 }
