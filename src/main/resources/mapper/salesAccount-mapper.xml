@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ukream.mapper.SalesAccountMapper">
+	<resultMap id="salesAccountDTO" type="com.ukream.dto.SalesAccountDTO">
+		<id property="salesAccountId" column="sales_account_id" />
+		<result property="userId" column="user_id" />
+		<result property="bankName" column="bank_name" />
+		<result property="accountNumber" column="account_number" />
+		<result property="accountHolder" column="account_holder" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<insert id="createSalesAccount" parameterType="SalesAccountDTO">
+		INSERT INTO sales_account (
+		user_id,
+		bank_name,
+		account_number,
+		account_holder,
+		create_date,
+		modify_date
+		) VALUES (
+		#{userId},
+		#{bankName},
+		#{accountNumber},
+		#{accountHolder},
+		#{createDate},
+		#{modifyDate}
+		)
+	</insert>
+	<select id="getSalesAccounts" parameterType="Long" resultMap="salesAccountDTO">
+		SELECT
+		sales_account_id,
+		user_id,
+		bank_name,
+		account_number,
+		account_holder,
+		create_date,
+		modify_date,
+		is_deleted
+		FROM sales_account
+		WHERE user_id = #{userId}
+	</select>
+	<select id="getSalesAccount" parameterType="Long" resultMap="salesAccountDTO">
+		SELECT
+		sales_account_id,
+		user_id,
+		bank_name,
+		account_number,
+		account_holder,
+		create_date,
+		modify_date,
+		is_deleted
+		FROM sales_account
+		WHERE sales_account_id = #{salesAccountId}
+	</select>
+	<delete id="deleteSalesAccount" parameterType="Long">
+		UPDATE sales_account SET is_deleted = TRUE WHERE sales_account_id=#{salesAccountId};
+	</delete>
+	<update id="updateSalesAccount" parameterType="SalesAccountDTO">
+		UPDATE sales_account
+		SET
+		user_id = #{userId},
+		bank_name = #{bankName},
+		account_number = #{accountNumber},
+		account_holder = #{accountHolder},
+		modify_date = #{modifyDate}
+		WHERE sales_account_id = #{salesAccountId}
+	</update>
+</mapper>

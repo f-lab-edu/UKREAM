@@ -11,10 +11,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ukream.dto.AddressDTO;
 import com.ukream.dto.LoginFormDTO;
 import com.ukream.dto.PaymentInfoDTO;
+import com.ukream.dto.SalesAccountDTO;
 import com.ukream.dto.UserDTO;
 import com.ukream.error.exception.LoginFailureException;
 import com.ukream.service.AddressService;
 import com.ukream.service.PaymentInfoService;
+import com.ukream.service.SalesAccountService;
 import com.ukream.service.UserService;
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +38,8 @@ class UserControllerTest {
   @MockBean private AddressService addressService;
 
   @MockBean private PaymentInfoService paymentInfoService;
+
+  @MockBean private SalesAccountService salesAccountService;
 
   @Autowired private MockMvc mockMvc;
 
@@ -359,5 +363,116 @@ class UserControllerTest {
         .andDo(print());
 
     verify(paymentInfoService, times(1)).updatePaymentInfo(any(PaymentInfoDTO.class));
+  }
+
+  @Test
+  void 판매_정산_계좌_생성_테스트() throws Exception {
+    SalesAccountDTO salesAccount =
+        SalesAccountDTO.builder().userId(1L).bankName("test").accountNumber("12345").build();
+    Long userId = salesAccount.getUserId();
+    MockHttpSession session = new MockHttpSession();
+    session.setAttribute("LOGIN_USER_ID", userId);
+
+    doNothing().when(userService).checkUserExists(userId);
+    doNothing().when(salesAccountService).createSalesAccount(any(SalesAccountDTO.class));
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post("/users/sales-accounts")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(salesAccount)))
+        .andExpect(status().isCreated())
+        .andDo(print());
+
+    verify(userService, times(1)).checkUserExists(userId);
+    verify(salesAccountService, times(1)).createSalesAccount(any(SalesAccountDTO.class));
+  }
+
+  @Test
+  void 판매_정산_계좌_목록_조회_테스트() throws Exception {
+    SalesAccountDTO salesAccount =
+        SalesAccountDTO.builder().userId(1L).bankName("test").accountNumber("12345").build();
+
+    List<SalesAccountDTO> salesAccounts = Arrays.asList(salesAccount);
+
+    Long userId = 1L;
+    MockHttpSession session = new MockHttpSession();
+
+    session.setAttribute("LOGIN_USER_ID", userId);
+
+    doNothing().when(userService).checkUserExists(userId);
+    given(salesAccountService.getSalesAccounts(userId)).willReturn(salesAccounts);
+
+    mockMvc
+        .perform(get("/users/sales-accounts").session(session))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].bankName").value("test"))
+        .andExpect(jsonPath("$[0].accountNumber").value("12345"));
+
+    verify(userService, times(1)).checkUserExists(userId);
+    verify(salesAccountService, times(1)).getSalesAccounts(userId);
+  }
+
+  @Test
+  void 판매_정산_계좌_조회_테스트() throws Exception {
+    SalesAccountDTO salesAccount =
+        SalesAccountDTO.builder().userId(1L).bankName("test").accountNumber("12345").build();
+
+    Long salesAccountId = 1L;
+    Long userId = 1L;
+    MockHttpSession session = new MockHttpSession();
+
+    session.setAttribute("LOGIN_USER_ID", userId);
+
+    doNothing().when(userService).checkUserExists(userId);
+    given(salesAccountService.getSalesAccount(salesAccountId, userId)).willReturn(salesAccount);
+
+    mockMvc
+        .perform(get("/users/sales-accounts/{salesAccountId}", salesAccountId).session(session))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.bankName").value("test"))
+        .andExpect(jsonPath("$.accountNumber").value("12345"));
+
+    verify(userService, times(1)).checkUserExists(userId);
+    verify(salesAccountService, times(1)).getSalesAccount(salesAccountId, userId);
+  }
+
+  @Test
+  void 판매_정산_계좌_삭제_테스트() throws Exception {
+    Long salesAccountId = 1L;
+
+    doNothing().when(salesAccountService).deleteSalesAccount(salesAccountId);
+
+    mockMvc
+        .perform(delete("/users/sales-accounts/{salesAccountId}", salesAccountId))
+        .andExpect(status().isOk());
+
+    verify(salesAccountService, times(1)).deleteSalesAccount(salesAccountId);
+  }
+
+  @Test
+  void 판매_정산_계좌_수정_테스트() throws Exception {
+
+    SalesAccountDTO salesAccount =
+        SalesAccountDTO.builder()
+            .salesAccountId(1L)
+            .userId(1L)
+            .bankName("test")
+            .accountNumber("12345")
+            .build();
+
+    doNothing().when(salesAccountService).updateSalesAccount(any(SalesAccountDTO.class));
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.put(
+                    "/users/sales-accounts/{salesAccountId}", salesAccount.getSalesAccountId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(salesAccount)))
+        .andExpect(status().isOk())
+        .andDo(print());
+
+    verify(salesAccountService, times(1)).updateSalesAccount(any(SalesAccountDTO.class));
   }
 }

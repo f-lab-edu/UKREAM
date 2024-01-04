@@ -4,9 +4,11 @@ import com.ukream.annotation.LoginCheck;
 import com.ukream.dto.AddressDTO;
 import com.ukream.dto.LoginFormDTO;
 import com.ukream.dto.PaymentInfoDTO;
+import com.ukream.dto.SalesAccountDTO;
 import com.ukream.dto.UserDTO;
 import com.ukream.service.AddressService;
 import com.ukream.service.PaymentInfoService;
+import com.ukream.service.SalesAccountService;
 import com.ukream.service.UserService;
 import com.ukream.util.SessionUtil;
 import java.util.List;
@@ -32,6 +34,7 @@ public class UserController {
   private final UserService userService;
   private final AddressService addressService;
   private final PaymentInfoService paymentInfoService;
+  private final SalesAccountService salesAccountService;
 
   /**
    * 회원 가입
@@ -161,7 +164,8 @@ public class UserController {
    */
   @LoginCheck(type = LoginCheck.UserType.USER)
   @PutMapping("addresses/{addressId}")
-  ResponseEntity<Void> updateAddress(@PathVariable Long addressId, @Valid @RequestBody AddressDTO address) {
+  ResponseEntity<Void> updateAddress(
+      @PathVariable Long addressId, @Valid @RequestBody AddressDTO address) {
     addressService.updateAddress(address);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
@@ -247,6 +251,90 @@ public class UserController {
   ResponseEntity<Void> updatePaymentInfo(
       @PathVariable Long paymentInfoId, @Valid @RequestBody PaymentInfoDTO paymentInfo) {
     paymentInfoService.updatePaymentInfo(paymentInfo);
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  /**
+   * 판매 정산 계좌 생성
+   *
+   * <p>사용자 권한을 가진 사용자에게만 접근이 허용됩니다.
+   *
+   * @param session 사용자 세션
+   * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
+   */
+  @PostMapping("/sales-accounts")
+  @LoginCheck(type = LoginCheck.UserType.USER)
+  public ResponseEntity<Void> createSalesAccount(
+      @Valid @RequestBody SalesAccountDTO salesAccount, HttpSession session) {
+    Long userId = SessionUtil.getLoginUserId(session);
+    userService.checkUserExists(userId);
+    salesAccountService.createSalesAccount(salesAccount);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  /**
+   * 판매 정산 계좌 목록 조회
+   *
+   * <p>사용자 권한을 가진 사용자에게만 접근이 허용됩니다.
+   *
+   * @return HTTP 상태 코드 200 (OK)와 주소 목록
+   * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
+   */
+  @GetMapping("/sales-accounts")
+  @LoginCheck(type = LoginCheck.UserType.USER)
+  public ResponseEntity<List<SalesAccountDTO>> getSalesAccounts(HttpSession session) {
+    Long userId = SessionUtil.getLoginUserId(session);
+    userService.checkUserExists(userId);
+    List<SalesAccountDTO> salesAccounts = salesAccountService.getSalesAccounts(userId);
+    return ResponseEntity.ok(salesAccounts);
+  }
+
+  /**
+   * 판매 정산 계좌 조회
+   *
+   * <p>사용자 권한을 가진 사용자에게만 접근이 허용됩니다.
+   *
+   * @return HTTP 상태 코드 200 (OK)와 주소 정보
+   * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
+   */
+  @GetMapping("/sales-accounts/{salesAccountId}")
+  @LoginCheck(type = LoginCheck.UserType.USER)
+  public ResponseEntity<SalesAccountDTO> getSalesAccount(
+      @PathVariable Long salesAccountId, HttpSession session) {
+    Long userId = SessionUtil.getLoginUserId(session);
+    userService.checkUserExists(userId);
+    SalesAccountDTO salesAccount = salesAccountService.getSalesAccount(salesAccountId, userId);
+    return ResponseEntity.ok(salesAccount);
+  }
+
+  /**
+   * 판매 정산 계좌 삭제
+   *
+   * <p>사용자 권한을 가진 사용자에게만 접근이 허용됩니다.
+   *
+   * @return HTTP 상태 코드 200 (OK)
+   * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
+   */
+  @LoginCheck(type = LoginCheck.UserType.USER)
+  @DeleteMapping("/sales-accounts/{salesAccountId}")
+  public ResponseEntity<Void> deleteSalesAccount(@PathVariable Long salesAccountId) {
+    salesAccountService.deleteSalesAccount(salesAccountId);
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  /**
+   * 판매 정산 계좌 수정
+   *
+   * <p>사용자 권한을 가진 사용자에게만 접근이 허용됩니다.
+   *
+   * @return HTTP 상태 코드 200 (OK)
+   * @throws LoginRequiredException 권한이 없는 경우 발생합니다.
+   */
+  @LoginCheck(type = LoginCheck.UserType.USER)
+  @PutMapping("/sales-accounts/{salesAccountId}")
+  ResponseEntity<Void> updateSalesAccount(
+      @PathVariable Long salesAccountId, @Valid @RequestBody SalesAccountDTO salesAccount) {
+    salesAccountService.updateSalesAccount(salesAccount);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 }
