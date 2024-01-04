@@ -28,9 +28,9 @@ Java, SpringBoot, Gradle, Mybatis, Docker, Mysql, Elasticsearch, LogStash, Kiban
 
 ### 기술적 이슈 및 해결 과정
 
-[중복되는 로그인 체크 로직 AOP 분리](https://www.notion.so/AOP-a9baff5c12d7490c83e49f36b89210d2?pvs=4)
+[중복되는 로그인 체크 로직 AOP 분리](https://northern-catshark-6f5.notion.site/AOP-a9baff5c12d7490c83e49f36b89210d2)
 
-[Elasticsearch를 이용한 검색 기능](https://www.notion.so/Elasticsearch-f136ca2d556542d9a791b3a0fb8af27b)
+[Elasticsearch를 이용한 검색 기능](https://northern-catshark-6f5.notion.site/Elasticsearch-f136ca2d556542d9a791b3a0fb8af27b)
 
 [Logstash를 이용한 데이터 동기화](https://northern-catshark-6f5.notion.site/Logstash-47dd5f12859146f194ee374b6f782d09)
 
