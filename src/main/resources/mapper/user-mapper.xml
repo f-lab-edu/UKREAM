@@ -2,7 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ukream.mapper.UserMapper">
-    
+    <resultMap id="userDTO" type="com.ukream.dto.UserDTO">
+		<id property="userId" column="user_id" />
+		<result property="email" column="email" />
+		<result property="password" column="password" />
+		<result property="userLevel" column="user_level" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
 
 
     <select id="checkDuplicatedEmail" resultType="int">
@@ -23,6 +30,18 @@
         FROM USER
         WHERE  email = #{email}
         AND password = #{password}
+    </select>
+
+    <select id="getUserInfo" parameterType="Long" resultMap="userDTO">
+        SELECT 
+        user_id,
+        email,
+        password,
+        user_level,
+        create_date,
+        modify_date 
+        FROM USER
+        WHERE user_id = #{userId}
     </select>
 
 

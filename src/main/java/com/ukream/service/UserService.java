@@ -4,6 +4,7 @@ import com.ukream.dto.LoginFormDTO;
 import com.ukream.dto.UserDTO;
 import com.ukream.error.exception.DuplicatedEmailException;
 import com.ukream.error.exception.LoginFailureException;
+import com.ukream.error.exception.UserNotFoundException;
 import com.ukream.mapper.UserMapper;
 import com.ukream.util.SHA256Util;
 import lombok.RequiredArgsConstructor;
@@ -42,4 +43,21 @@ public class UserService {
 
     return user;
   }
+
+  public UserDTO getUserInfo(Long userId) {
+    UserDTO user = userMapper.getUserInfo(userId);
+    if (user == null) {
+      throw new UserNotFoundException("해당 유저를 찾을 수 없습니다.");
+    }
+    return user;
+  }
+
+  public void checkUserExists(Long userId) {
+    UserDTO user = userMapper.getUserInfo(userId);
+    if (user == null) {
+      throw new UserNotFoundException("해당 유저를 찾을 수 없습니다.");
+    }
+  }
+
+
 }
