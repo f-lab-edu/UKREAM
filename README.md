@@ -34,6 +34,8 @@ Java, SpringBoot, Gradle, Mybatis, Docker, Mysql, Elasticsearch, LogStash, Kiban
 
 [Logstash를 이용한 데이터 동기화](https://northern-catshark-6f5.notion.site/Logstash-47dd5f12859146f194ee374b6f782d09)
 
+[kafka 이용한 실시간 데이터 동기화](https://northern-catshark-6f5.notion.site/Kafka-fffc8fa6764f48329252db8eea30c9ee)
+
 
 
 
