@@ -4,7 +4,9 @@
 
 ## 기술 스택
 
-Java, SpringBoot, Gradle, Mybatis, Docker, Mysql, Elasticsearch, LogStash, Kibana, Kafka
+![기술스택-4](https://github.com/f-lab-edu/UKREAM/assets/141301678/9d5f87fe-abec-4995-8018-9c57609c6918)
+
+
 
 ## 코드 컨벤션
 
