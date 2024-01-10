@@ -4,8 +4,8 @@
 
 ## 기술 스택
 
-![기술스택-4](https://github.com/f-lab-edu/UKREAM/assets/141301678/9d5f87fe-abec-4995-8018-9c57609c6918)
 
+![기술스택-5](https://github.com/f-lab-edu/UKREAM/assets/141301678/0b2ef1ca-ca52-4040-b29e-a225a8819b06)
 
 
 ## 코드 컨벤션
