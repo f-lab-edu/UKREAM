@@ -4,8 +4,8 @@
 
 ## 기술 스택
 
+![기술스택 drawio (4)](https://github.com/f-lab-edu/UKREAM/assets/141301678/6ceb1ddf-acc7-4e52-b813-db51d3bfde0a)
 
-![기술스택-5](https://github.com/f-lab-edu/UKREAM/assets/141301678/0b2ef1ca-ca52-4040-b29e-a225a8819b06)
 
 
 ## 코드 컨벤션
@@ -13,6 +13,8 @@
 코드는 Google Code Style을 준수합니다.
 
 ## 브랜치 관리 전략
+
+![48032310-63842400-e114-11e8-8db0-06dc0504dcb5](https://github.com/f-lab-edu/UKREAM/assets/141301678/0f4133aa-cb03-43b7-8dfe-98c7475995f5)
 
 
 ### 기능 개발
