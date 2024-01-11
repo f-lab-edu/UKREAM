@@ -1,5 +1,7 @@
 # UKREAM
 
+한정판 거래 플랫폼 "**KREAM**"을 벤치마킹한 프로젝트 입니다.
+
 **UKREAM**은 **KREAM**의 "KICKS RULE EVERYTHING AROUND ME"에서 "UNIQUE"를 앞에 붙여 만든 이름으로, "평범하지 않은 신발이 주변의 모든 것을 지배하거나 영향을 미친다"를 나타냅니다.
 
 ## 기술 스택
