@@ -17,7 +17,8 @@ public class UserDTO {
   @NotNull(message = "비밀번호는 필수입니다.")
   private String password;
 
-  private final String userLevel;
+  @Setter
+  private String userLevel;
   private final LocalDateTime createDate;
   private final LocalDateTime modifyDate;
 }
