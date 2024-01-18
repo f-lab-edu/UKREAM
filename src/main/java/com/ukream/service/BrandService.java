@@ -18,7 +18,7 @@ public class BrandService {
     try {
       brandMapper.createBrand(brand);
     } catch (DataIntegrityViolationException e) {
-      throw new DuplicatedBrandNameException("중복된 브랜드명 입니다.");
+      throw new DuplicatedBrandNameException();
     }
   }
 
@@ -29,7 +29,7 @@ public class BrandService {
   public BrandDTO getBrand(Long brandId) {
     BrandDTO brand = brandMapper.getBrand(brandId);
     if (brand == null) {
-      throw new BrandNotFoundException("해당 브랜드를 찾을 수 없습니다.");
+      throw new BrandNotFoundException();
     }
     return brand;
   }
@@ -37,21 +37,21 @@ public class BrandService {
   public void deleteBrand(Long brandId) {
     int deletedRows = brandMapper.deleteBrand(brandId);
     if (deletedRows == 0) {
-      throw new BrandNotFoundException("해당 브랜드를 찾을 수 없습니다.");
+      throw new BrandNotFoundException();
     }
   }
 
   public void updateBrand(BrandDTO brand) {
     int updatedRows = brandMapper.updateBrand(brand);
     if (updatedRows == 0) {
-      throw new BrandNotFoundException("해당 브랜드를 찾을 수 없습니다.");
+      throw new BrandNotFoundException();
     }
   }
 
   public void checkBrandExists(Long brandId) {
     BrandDTO brand = brandMapper.getBrand(brandId);
     if (brand == null) {
-      throw new BrandNotFoundException("해당 브랜드를 찾을 수 없습니다.");
+      throw new BrandNotFoundException();
     }
   }
 }
