@@ -88,7 +88,7 @@
 <img width="364" alt="스크린샷 2023-10-21 오후 3 37 20" src="https://github.com/f-lab-edu/UKREAM/assets/141301678/24d24e58-c79c-41ab-ba77-2b92ffe7f00e">
 
 
-##ERD
+## ERD
 
 <img width="1002" alt="스크린샷 2023-10-23 오후 9 15 36" src="https://github.com/f-lab-edu/UKREAM/assets/141301678/736355fd-384d-4a00-8c58-13572f23d50f">
 
